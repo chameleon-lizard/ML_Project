@@ -22,13 +22,13 @@ def prepare_points(tensor, data_config, threshold = False):
 
 def get_random_colored_images(images, seed = 0x000000, color='random'):
     np.random.seed(seed)
-    images = 0.5*(images + 1)
     size = images.shape[0]
     
     # here we use HSV representation
     colored_images = []
     Hues_arr = np.array([60, 120, 240, 360])
     if color == 'random':
+        #hues = 360*np.random.rand(size)
         hues = np.random.choice(Hues_arr, size)
     elif color == 'red':
         hues = 360*np.ones(size)
@@ -40,60 +40,73 @@ def get_random_colored_images(images, seed = 0x000000, color='random'):
         hues = 60*np.ones(size)      
         
     for V, H in zip(images, hues):
-        V_min = 0
-        
-        a = (V - V_min)*(H % 60) / 60
-        V_inc = a
-        V_dec = V - a
+      
         colored_image = np.zeros((3, V.shape[0], V.shape[1], V.shape[2]))
         H_i = round(H/60) % 6
-        
-        if H_i == 0:
-            colored_image[0] = V
-            colored_image[1] = V_inc
-            colored_image[2] = V_min
-        elif H_i == 1:
-            colored_image[0] = V_dec
-            colored_image[1] = V
-            colored_image[2] = V_min
-        elif H_i == 2:
-            colored_image[0] = V_min
-            colored_image[1] = V
-            colored_image[2] = V_inc
-        elif H_i == 3:
-            colored_image[0] = V_min
-            colored_image[1] = V_dec
-            colored_image[2] = V
-        elif H_i == 4:
-            colored_image[0] = V_inc
-            colored_image[1] = V_min
-            colored_image[2] = V
-        elif H_i == 5:
-            colored_image[0] = V
-            colored_image[1] = V_min
-            colored_image[2] = V_dec
-        
+        colored_image[0] = V
+        colored_image[1] = V
+        colored_image[2] = V
+        for x in range(data_config.x_shape):
+            for y in range(data_config.y_shape):
+                for z in range(data_config.z_shape):
+                    if H_i == 0:              # red
+                        colored_image[0, x, y, z] = int(V[x, y, z] > 0) * 255
+                        colored_image[1, x, y, z] = 0
+                        colored_image[2, x, y, z] = 0
+                    elif H_i == 1:            # yellow
+                        colored_image[0, x, y, z] = int(V[x, y, z] > 0) * 255
+                        colored_image[1, x, y, z] = int(V[x, y, z] > 0) * 255
+                        colored_image[2, x, y, z] = 0
+                    elif H_i == 2:            # green
+                        colored_image[0, x, y, z] = 0
+                        colored_image[1, x, y, z] = int(V[x , y, z] > 0) * 255
+                        colored_image[2, x, y, z] = 0
+                    elif H_i == 3:
+                        colored_image[0, x, y, z] = 0
+                        colored_image[1, x, y, z] = 0
+                        colored_image[2, x, y, z] = 0
+                    elif H_i == 4:            # blue
+                        colored_image[0, x, y, z] = 0
+                        colored_image[1, x, y, z] = 0
+                        colored_image[2, x, y, z] = int(V[x , y, z] > 0) * 255
+                    elif H_i == 5:
+                        colored_image[0, x, y, z] = 0
+                        colored_image[1, x, y, z] = 0
+                        colored_image[2, x, y, z] = 0
+
         colored_images.append(colored_image)
     
     colored_images = np.stack(colored_images, axis = 0)
-    colored_images = 2*colored_images - 1
-        
+    
     return colored_images
        
 def get_dataset():
-    X_train_A, X_train_B, X_test = [], [], []
-    with h5py.File('data/full_dataset_vectors.h5', 'r') as dataset:
+    X_train_A = []
+    X_train_B = []
+    y_train_A = []
+    y_train_B = []
+    X_test = []
+    y_test = []
+    with h5py.File('full_dataset_vectors.h5', 'r') as dataset:
         for i in range(dataset["y_train"].shape[0]):
             if dataset["y_train"][i] == 3:
                 X_train_A.append(dataset["X_train"][i])
+                y_train_A.append(dataset["y_train"][i])
             elif dataset["y_train"][i] == 5:
                 X_train_B.append(dataset["X_train"][i])
+                y_train_B.append(dataset["y_train"][i])
 
         for i in range(dataset["y_test"].shape[0]):
             if dataset["y_test"][i] == 3:
                 X_test.append(dataset["X_test"][i])
+                y_test.append(dataset["y_test"][i])
 
-    X_train_A, X_train_B, X_test = np.array(X_train_A), np.array(X_train_B), np.array(X_test)
+    X_train_A = np.array(X_train_A)
+    X_train_B = np.array(X_train_B)
+    y_train_A = np.array(y_train_A)
+    y_train_B = np.array(y_train_B)
+    X_test = np.array(X_test)
+    y_test = np.array(y_test)
     
     X_Shape_train_A = prepare_points(X_train_A, data_config, threshold = False)
     X_Shape_train_B = prepare_points(X_train_B, data_config, threshold = False)   
@@ -102,6 +115,7 @@ def get_dataset():
     X_RGB_train_A = get_random_colored_images(X_Shape_train_A, color='random')
     X_RGB_train_B = get_random_colored_images(X_Shape_train_B, color='random')
     X_RGB_test = get_random_colored_images(X_Shape_test, color='random')
+    
     
     print("Train A shape:", X_RGB_train_A.shape)
     print("Train B shape:", X_RGB_train_B.shape)
