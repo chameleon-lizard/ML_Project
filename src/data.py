@@ -87,7 +87,7 @@ def get_dataset():
     y_train_B = []
     X_test = []
     y_test = []
-    with h5py.File('full_dataset_vectors.h5', 'r') as dataset:
+    with h5py.File('data/full_dataset_vectors.h5', 'r') as dataset:
         for i in range(dataset["y_train"].shape[0]):
             if dataset["y_train"][i] == 3:
                 X_train_A.append(dataset["X_train"][i])

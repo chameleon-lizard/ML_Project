@@ -1,4 +1,5 @@
 from torch.utils.data import Dataset, DataLoader
+from PIL import Image
 
 class Colored3DMNIST(Dataset):
     def __init__(self, data, transform=None):

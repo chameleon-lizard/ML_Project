@@ -4,8 +4,7 @@ import plotly.graph_objs as go
 import pandas as pd
 import numpy as np
 
-def plot_img(image, plot_only_figure = False):
-    
+def plot_img(image, plot_only_figure=True):
     for x in range(data_config.x_shape):
         for y in range(data_config.y_shape):
             for z in range(data_config.z_shape):
@@ -25,7 +24,9 @@ def plot_img(image, plot_only_figure = False):
     elif plot_img_color[1] == 255:
         color_ind = 1
     elif plot_img_color[2] == 255:
-        color_ind = 2    
+        color_ind = 2
+    else:
+        raise ValueError("Incorrect color encountered.")
         
     plot_img_3d = image[color_ind]
     plot_label = "3"
@@ -54,7 +55,7 @@ def plot_img(image, plot_only_figure = False):
                                        text=f"current label: {plot_label}",
                                        marker=dict(
                                        color = plot_df["color"],
-                                       size=6,       
+                                       size=4,       
                                        colorscale='Viridis',
                                        opacity= 0.8 ))])
     fig.show()
