@@ -81,32 +81,15 @@ def get_random_colored_images(images, seed = 0x000000, color='random'):
     return colored_images
        
 def get_dataset():
-    X_train_A = []
-    X_train_B = []
-    y_train_A = []
-    y_train_B = []
-    X_test = []
-    y_test = []
-    with h5py.File('data/full_dataset_vectors.h5', 'r') as dataset:
-        for i in range(dataset["y_train"].shape[0]):
-            if dataset["y_train"][i] == 3:
-                X_train_A.append(dataset["X_train"][i])
-                y_train_A.append(dataset["y_train"][i])
-            elif dataset["y_train"][i] == 5:
-                X_train_B.append(dataset["X_train"][i])
-                y_train_B.append(dataset["y_train"][i])
+    with h5py.File('full_dataset_vectors.h5', 'r') as dataset:
+        X_train_A = dataset["X_train"][dataset["y_train"][:] == 3]
+        y_train_A = dataset["y_train"][dataset["y_train"][:] == 3]
 
-        for i in range(dataset["y_test"].shape[0]):
-            if dataset["y_test"][i] == 3:
-                X_test.append(dataset["X_test"][i])
-                y_test.append(dataset["y_test"][i])
+        X_train_B = dataset["X_train"][dataset["y_train"][:] == 5]
+        y_train_B = dataset["y_train"][dataset["y_train"][:] == 5]
 
-    X_train_A = np.array(X_train_A)
-    X_train_B = np.array(X_train_B)
-    y_train_A = np.array(y_train_A)
-    y_train_B = np.array(y_train_B)
-    X_test = np.array(X_test)
-    y_test = np.array(y_test)
+        X_test = dataset["X_test"][dataset["y_test"][:] == 3]
+        y_test = dataset["y_test"][dataset["y_test"][:] == 3]   
     
     X_Shape_train_A = prepare_points(X_train_A, data_config, threshold = False)
     X_Shape_train_B = prepare_points(X_train_B, data_config, threshold = False)   
