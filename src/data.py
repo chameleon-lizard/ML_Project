@@ -40,7 +40,6 @@ def get_random_colored_images(images, seed = 0x000000, color='random'):
         hues = 60*np.ones(size)      
         
     for V, H in zip(images, hues):
-      
         colored_image = np.zeros((3, V.shape[0], V.shape[1], V.shape[2]))
         H_i = round(H/60) % 6
         
