@@ -43,36 +43,31 @@ def get_random_colored_images(images, seed = 0x000000, color='random'):
       
         colored_image = np.zeros((3, V.shape[0], V.shape[1], V.shape[2]))
         H_i = round(H/60) % 6
-        colored_image[0] = V
-        colored_image[1] = V
-        colored_image[2] = V
-        for x in range(data_config.x_shape):
-            for y in range(data_config.y_shape):
-                for z in range(data_config.z_shape):
-                    if H_i == 0:              # red
-                        colored_image[0, x, y, z] = int(V[x, y, z] > 0) * 255
-                        colored_image[1, x, y, z] = 0
-                        colored_image[2, x, y, z] = 0
-                    elif H_i == 1:            # yellow
-                        colored_image[0, x, y, z] = int(V[x, y, z] > 0) * 255
-                        colored_image[1, x, y, z] = int(V[x, y, z] > 0) * 255
-                        colored_image[2, x, y, z] = 0
-                    elif H_i == 2:            # green
-                        colored_image[0, x, y, z] = 0
-                        colored_image[1, x, y, z] = int(V[x , y, z] > 0) * 255
-                        colored_image[2, x, y, z] = 0
-                    elif H_i == 3:
-                        colored_image[0, x, y, z] = 0
-                        colored_image[1, x, y, z] = 0
-                        colored_image[2, x, y, z] = 0
-                    elif H_i == 4:            # blue
-                        colored_image[0, x, y, z] = 0
-                        colored_image[1, x, y, z] = 0
-                        colored_image[2, x, y, z] = int(V[x , y, z] > 0) * 255
-                    elif H_i == 5:
-                        colored_image[0, x, y, z] = 0
-                        colored_image[1, x, y, z] = 0
-                        colored_image[2, x, y, z] = 0
+        
+        if H_i == 0: # red
+            colored_image[0, :, :, :] = (V[:, :, :] > 0) * 255
+            colored_image[1, :, :, :] = V
+            colored_image[2, :, :, :] = V
+        if H_i == 1: # yellow
+            colored_image[0, :, :, :] = (V[:, :, :] > 0) * 255
+            colored_image[1, :, :, :] = (V[:, :, :] > 0) * 255
+            colored_image[2, :, :, :] = V
+        if H_i == 2: # green
+            colored_image[0, :, :, :] = V
+            colored_image[1, :, :, :] = (V[:, :, :] > 0) * 255
+            colored_image[2, :, :, :] = V
+        if H_i == 3: 
+            colored_image[0, :, :, :] = (V[:, :, :] > 0) * 255
+            colored_image[1, :, :, :] = V
+            colored_image[2, :, :, :] = V
+        if H_i == 4: # blue
+            colored_image[0, :, :, :] = V
+            colored_image[1, :, :, :] = V
+            colored_image[2, :, :, :] = (V[:, :, :] > 0) * 255     
+        if H_i == 5: 
+            colored_image[0, :, :, :] = (V[:, :, :] > 0) * 255
+            colored_image[1, :, :, :] = V
+            colored_image[2, :, :, :] = V 
 
         colored_images.append(colored_image)
     
@@ -81,7 +76,7 @@ def get_random_colored_images(images, seed = 0x000000, color='random'):
     return colored_images
        
 def get_dataset():
-    with h5py.File('full_dataset_vectors.h5', 'r') as dataset:
+    with h5py.File('data/full_dataset_vectors.h5', 'r') as dataset:
         X_train_A = dataset["X_train"][dataset["y_train"][:] == 3]
         y_train_A = dataset["y_train"][dataset["y_train"][:] == 3]
 
