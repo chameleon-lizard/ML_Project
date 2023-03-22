@@ -2,5 +2,4 @@ NeuralOptimalTransport/
 .ipynb_checkpoints
 Projects.pdf
 __pycache__/
-weights/
 data/
