@@ -4,7 +4,7 @@ import plotly.graph_objs as go
 import pandas as pd
 import numpy as np
 
-def plot_img(image, plot_only_figure=True):
+def plot_img2(image, plot_only_figure=True):
     for x in range(data_config.x_shape):
         for y in range(data_config.y_shape):
             for z in range(data_config.z_shape):
