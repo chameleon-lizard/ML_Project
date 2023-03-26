@@ -14,6 +14,8 @@ In this project, we are to implement and train OT approach on 3D MNIST digits da
 ![Experiment sheet 1](pictures/exp1.png)
 ![Experiment sheet 2](pictures/exp2.png)
 
+The weights for the experiments can be found [here](https://drive.google.com/file/d/1T71Xsl1nLQZbWQLrlUjMOFfRYPN1McSF/view?usp=share_link).
+
 
 ## Repository structure
 ``` bash
@@ -52,6 +54,7 @@ ML_Project
 
 [3D MNIST dataset](https://www.kaggle.com/datasets/daavoo/3d-mnist) - the dataset should be pre-processed with ```src/data.py```
 The dataloader can be found in ```src/dataset.py```
+The ready preprocessed version can be found on [drive](https://drive.google.com/drive/folders/1UrOVYA_QvLX67v-yiNYKrBqDIcrAl-ec?usp=share_link)
 
 [Original 3D MNIST dataset](http://yann.lecun.com/exdb/mnist/) - the datset is pre-processed in Jupyter notebooks with experiments by the functions defined in ```coloring.py```
 
