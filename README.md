@@ -63,6 +63,10 @@ Our models schemes can be found in ```schemes``` folder and could be run with [n
 
 
 
+## Weights
+
+[Link to .zip archive with weights](https://drive.google.com/file/d/1T71Xsl1nLQZbWQLrlUjMOFfRYPN1McSF/view?usp=share_link)
+
 
 
 
