@@ -34,6 +34,10 @@ ML_Project
 [3D MNIST dataset](https://www.kaggle.com/datasets/daavoo/3d-mnist) - the dataset should is pre-processed with ```src/data.py```
 The dataloader can be found in ```scr/dataset.py```
 
+## Weights
+
+[Link to .zip archive with weights](https://drive.google.com/file/d/1T71Xsl1nLQZbWQLrlUjMOFfRYPN1McSF/view?usp=share_link)
+
 
 
 
